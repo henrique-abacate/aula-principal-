@@ -36,11 +36,13 @@ class Form {
   handleMousePressed() {
     this.playButton.mousePressed(()=>{
       //esconder a entrada
+      this.input.hide();
 
       //esconder o botão
-
+this.playButton.hide ();
       //exibir a mensagem
-
+var mensagem = `Olá, bem vindo ${this.input.value()}</br>espere o outro jogador entrar mané`;
+this.greeting.html(mensagem);
       //atualizando os players
       playerCount +=1;
       player.name = this.input.value();
