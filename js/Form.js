@@ -29,5 +29,28 @@ class Form {
   display() {
     this.setElementsPosition();
     this.setElementsStyle();
+    this.handleMousePressed();
+
   }
+
+  handleMousePressed() {
+    this.playButton.mousePressed(()=>{
+      //esconder a entrada
+
+      //esconder o botão
+
+      //exibir a mensagem
+
+      //atualizando os players
+      playerCount +=1;
+      player.name = this.input.value();
+      player.index = playerCount;
+      player.addPlayer();
+      player.updateCount(playerCount);
+    })
+ 
+}
+
+
+
 }
