@@ -6,6 +6,14 @@ class Player {
     this.positionY = 0;
   }
 
+  update(){
+    var playerIndex = "players/player" + this.index;
+    database.ref(playerIndex).update({
+      positionX: this.positionX,
+      positionY: this.positionY,
+    })
+  }
+
   addPlayer(){
     var playerIndex = "players/player" + this.index;
     if(this.index === 1){
@@ -32,6 +40,13 @@ class Player {
     database.ref("/").update({
       playerCount: count
     });
+}
+
+static getPlayersInfo(){
+  var playerInfoRef = database.ref("players");
+  playerInfoRef.on("value", data =>{
+    allPlayers = data.val();
+  })
 }
 
 }
