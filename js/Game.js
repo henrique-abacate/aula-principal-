@@ -38,8 +38,17 @@ class Game {
 
   handleResetButton(){
     //Henrique
-  }
+    this.resetButton.mousePressed(()=>{
+database.ref("/").set({
+  gameState : 0,
+  playerCount:0,
+  players:{}
+  
+});
+window.location.reload ();
 
+  });
+  }
   play(){
     this.handleElements();
     this.handleResetButton();
@@ -65,7 +74,7 @@ class Game {
           ellipse(x,y,60,60);
 
           //camera do jogo na direção y
-          camera.position.x = carros[index-1].position.x;
+          camera.position.y = carros[index-1].position.y;
         }
   
       }
@@ -81,6 +90,18 @@ class Game {
     if(keyIsDown(UP_ARROW)){
       player.positionY += 10;
       player.update();
+    }
+    if(keyIsDown(LEFT_ARROW)&&player.positionX > width/3-50){
+      player.positionX -= 10;
+      player.update();
+
+    }
+    
+    if(keyIsDown(RIGHT_ARROW)&&player.positionX < width/2+250){
+      player.positionX += 10;
+      player.update();
+      
+
     }
   }
 
