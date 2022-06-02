@@ -1,5 +1,10 @@
 class Game {
-  constructor() {}
+  constructor() {
+    this.resetTitle = createElement("h2");
+    this.resetButton = createButton("");
+
+
+  }
 
   start() {
     form = new Form();
@@ -22,10 +27,22 @@ class Game {
     form.hide();
     form.titleImg.position(40,50);
     form.titleImg.class("gameTitleAfterEffect");
+
+    this.resetTitle.html("Reiniciar Jogo");
+    this.resetTitle.class("resetText");
+    this.resetTitle.position(width/2 + 200,40);
+
+    this.resetButton.class("resetButton");
+    this.resetButton.position(width/2 + 230, 100);
+  }
+
+  handleResetButton(){
+    //Henrique
   }
 
   play(){
     this.handleElements();
+    this.handleResetButton();
     Player.getPlayersInfo();
 
     if(allPlayers !== undefined){
@@ -35,12 +52,22 @@ class Game {
 
       for(var plr in allPlayers){
         index = index + 1;
+
         var x = allPlayers[plr].positionX;
         var y = height - allPlayers[plr].positionY;
 
         carros[index-1].position.x = x;
         carros[index-1].position.y = y;
-        
+
+        if(index === player.index){
+          stroke(10);
+          fill("red");
+          ellipse(x,y,60,60);
+
+          //camera do jogo na direção y
+          camera.position.x = carros[index-1].position.x;
+        }
+  
       }
 
       this.handlePlayerControl();
@@ -51,7 +78,10 @@ class Game {
   }
 
   handlePlayerControl(){
-
+    if(keyIsDown(UP_ARROW)){
+      player.positionY += 10;
+      player.update();
+    }
   }
 
   getState(){
