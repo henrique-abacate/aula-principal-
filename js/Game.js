@@ -26,7 +26,9 @@ class Game {
 
     fuels = new Group();
     powerCoins = new Group();
-
+    obstaculos = new Group();
+    //this.addSprites (obstaculos,obstaclesPositions.length,obstacle2Image,0.04, obstaclesPositions);
+    this.addSprites (powerCoins,3,powerCoinsImg,0.09);
     this.addSprites(fuels,5,fuelImg,0.02);
 
     var obstaclesPositions = [
@@ -172,12 +174,19 @@ showLeaderboard(){
   this.leader2.html(leader2);
 }
 
-addSprites(spriteGroup, numberOfSprites, spriteImage, scale){
+addSprites(spriteGroup, numberOfSprites, spriteImage, scale, positions = []){
   for(var i=0; i<numberOfSprites; i++){
     var x,y;
+if(positions.length>0){
+  x = positions[i].x;
+  y= positions[i].y;
+  spriteImage = positions[i].image
+}
+else {x = random(width/2 + 150, width/2 - 150);
+y = random(-height*4.5, height - 400);
+}
 
-    x = random(width/2 + 150, width/2 - 150);
-    y = random(-height*4.5, height - 400);
+   
 
     var sprite = createSprite(x,y);
     sprite.addImage("sprite", spriteImage);
