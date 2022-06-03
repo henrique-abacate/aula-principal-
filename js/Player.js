@@ -4,6 +4,9 @@ class Player {
     this.index = null;
     this.positionX = 0;
     this.positionY = 0;
+    this.rank = 0;
+    this.score = 0;
+    this.fuel = 185;
   }
 
   update(){
@@ -11,6 +14,8 @@ class Player {
     database.ref(playerIndex).update({
       positionX: this.positionX,
       positionY: this.positionY,
+      rank: this.rank,
+      score: this.score,
     })
   }
 
@@ -26,6 +31,8 @@ class Player {
       name: this.name,
       positionX: this.positionX,
       positionY: this.positionY,
+      rank: this.rank,
+      score: this.score,
     });
   }
 
