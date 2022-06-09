@@ -27,9 +27,7 @@ class Game {
     fuels = new Group();
     powerCoins = new Group();
     obstaculos = new Group();
-    //this.addSprites (obstaculos,obstaclesPositions.length,obstacle2Image,0.04, obstaclesPositions);
-    this.addSprites (powerCoins,3,powerCoinsImg,0.09);
-    this.addSprites(fuels,5,fuelImg,0.02);
+    
 
     var obstaclesPositions = [
       { x: width / 2 + 250, y: height - 800, image: obstacle2Image },
@@ -45,6 +43,11 @@ class Game {
       { x: width / 2, y: height - 5300, image: obstacle1Image },
       { x: width / 2 - 180, y: height - 5500, image: obstacle2Image }
     ];
+
+    //this.addSprites (obstaculos,obstaclesPositions.length,obstacle2Image,0.04, obstaclesPositions);
+    this.addSprites (powerCoins,3,powerCoinsImg,0.09);
+    this.addSprites(fuels,5,fuelImg,0.02);
+    this.addSprites(obstaculos,obstaclesPositions.length,obstacle1Image,0.04,obstaclesPositions);
 
   }
 
@@ -78,8 +81,8 @@ class Game {
 database.ref("/").set({
   gameState : 0,
   playerCount:0,
-  players:{}
-  
+  players:{},
+  carsAtEnd: 0,
 });
 window.location.reload ();
 
@@ -89,10 +92,12 @@ window.location.reload ();
     this.handleElements();
     this.handleResetButton();
     Player.getPlayersInfo();
+    player.getCarsAtEnd();
 
     if(allPlayers !== undefined){
       image(pistaImg,0,-height*5, width, height*6);
       
+      this.showLife();
       this.showLeaderboard();
 
       var index = 0;
@@ -111,6 +116,9 @@ window.location.reload ();
           fill("red");
           ellipse(x,y,60,60);
 
+          this.handleFuel(index);
+          this.handlePowerCoins(index);
+
           //camera do jogo na direção y
           camera.position.y = carros[index-1].position.y;
         }
@@ -118,6 +126,16 @@ window.location.reload ();
       }
 
       this.handlePlayerControl();
+
+      const finishLine = height*6 - 100;
+
+      if(player.positionY > finishLine){
+        gameState = 2;
+        player.rank +=1;
+        Player.updateCarsAtEnd();
+        player.update();
+        this.showRank();
+      }
 
       drawSprites();
     }
@@ -185,9 +203,6 @@ if(positions.length>0){
 else {x = random(width/2 + 150, width/2 - 150);
 y = random(-height*4.5, height - 400);
 }
-
-   
-
     var sprite = createSprite(x,y);
     sprite.addImage("sprite", spriteImage);
 
@@ -196,4 +211,42 @@ y = random(-height*4.5, height - 400);
     spriteGroup.add(sprite);
   }
 }
+
+handleFuel(index){
+  carros[index-1].overlap(fuels, function(collector,collected){
+    player.fuel = 185;
+    collected.remove();
+  });
+}
+
+handlePowerCoins(index){
+  carros[index-1].overlap(powerCoins, function(collector,collected){
+    player.score +=20;
+    player.update();
+    collected.remove();
+  });
+}
+
+showRank(){
+  swal({
+    title: `Incrível!${"\n"}Rank${"\n"}${player.rank}`,
+    text: "Parabéns! Você superou os seus inimigos",
+    imageUrl: 
+    "https://raw.githubusercontent.com/vishalgaddam873/p5-multiplayer-car-race-game/master/assets/cup.png",
+    imageSize: "100x100",
+    confirmButtonText: "Ok"
+  });
+}
+
+showLife(){
+  push();
+  image(lifeImg,width/2-130, height - player.positionY - 400,20,20);
+  fill("white");
+  rect(width/2 - 100, height - player.positionY - 400,185,20);
+  fill("red");
+  rect(width/2 - 100, height - player.positionY - 400,player.life,20);
+  noStroke();
+  pop();
+}
+
 }
