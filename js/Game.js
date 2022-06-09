@@ -93,12 +93,14 @@ window.location.reload ();
     this.handleResetButton();
     Player.getPlayersInfo();
     player.getCarsAtEnd();
+  
 
     if(allPlayers !== undefined){
       image(pistaImg,0,-height*5, width, height*6);
       
       this.showLife();
       this.showLeaderboard();
+this.showFuel ();
 
       var index = 0;
 
@@ -217,6 +219,13 @@ handleFuel(index){
     player.fuel = 185;
     collected.remove();
   });
+  if (player.fuel>0 ){
+    player.fuel -=0.4;
+  }
+  if(player.fuel<0){
+    this.gameover ()
+  gameState =2;
+  }
 }
 
 handlePowerCoins(index){
@@ -248,5 +257,24 @@ showLife(){
   noStroke();
   pop();
 }
-
+showFuel(){
+  push();
+  image(fuelImg,width/2-130, height - player.positionY - 350,20,20);
+  fill("white");
+  rect(width/2 - 100, height - player.positionY - 350,185,20);
+  fill("blue");
+  rect(width/2 - 100, height - player.positionY - 350,player.fuel,20);
+  noStroke();
+  pop();
+}
+gameOver(){
+  swal({
+    title: `Gameover!${"\n"}Rank${"\n"}${player.rank}`,
+    text: "Puts, Você perdeu",
+    imageUrl: 
+    "https://cdn.shopify.com/s/files/1/1061/1924/products/Thumbs_Down_Sign_Emoji_Icon_ios10_grande.png",
+    imageSize: "100x100",
+    confirmButtonText: "Ok"
+  });
+}
 }
