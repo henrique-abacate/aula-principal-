@@ -17,7 +17,8 @@ class Player {
       positionY: this.positionY,
       rank: this.rank,
       score: this.score,
-    })
+      life: this.life,
+    });
   }
 
   addPlayer(){

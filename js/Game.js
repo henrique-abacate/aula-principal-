@@ -7,6 +7,9 @@ class Game {
     this.leader1 = createElement("h2");
     this.leader2 = createElement("h2");
 
+    this.playerMoving = false;
+    this.leftKeyActive = false;
+
   }
 
   start() {
@@ -100,7 +103,7 @@ window.location.reload ();
       
       this.showLife();
       this.showLeaderboard();
-this.showFuel ();
+      this.showFuel ();
 
       var index = 0;
 
@@ -120,6 +123,11 @@ this.showFuel ();
 
           this.handleFuel(index);
           this.handlePowerCoins(index);
+          this.handleObstacleCollision(index);
+          
+          if(player.life <= 0){
+            this.playerMoving = false;
+          }
 
           //camera do jogo na direção y
           camera.position.y = carros[index-1].position.y;
@@ -134,7 +142,7 @@ this.showFuel ();
       if(player.positionY > finishLine){
         gameState = 2;
         player.rank +=1;
-        Player.updateCarsAtEnd();
+        Player.updateCarsAtEnd(player.rank);
         player.update();
         this.showRank();
       }
@@ -146,16 +154,19 @@ this.showFuel ();
 
   handlePlayerControl(){
     if(keyIsDown(UP_ARROW)){
+      this.playerMoving = true;
       player.positionY += 10;
       player.update();
     }
     if(keyIsDown(LEFT_ARROW)&&player.positionX > width/3-50){
+      this.leftKeyActive = true;
       player.positionX -= 10;
       player.update();
 
     }
     
     if(keyIsDown(RIGHT_ARROW)&&player.positionX < width/2+250){
+      this.leftKeyActive = false;
       player.positionX += 10;
       player.update();
       
@@ -223,8 +234,9 @@ handleFuel(index){
     player.fuel -=0.4;
   }
   if(player.fuel<0){
-    this.gameover ()
-  gameState =2;
+    this.playerMoving = false;
+    this.gameOver();
+    gameState =2;
   }
 }
 
@@ -249,24 +261,40 @@ showRank(){
 
 showLife(){
   push();
-  image(lifeImg,width/2-130, height - player.positionY - 400,20,20);
+  image(lifeImg,width/2-130, height - player.positionY - 200,20,20);
   fill("white");
-  rect(width/2 - 100, height - player.positionY - 400,185,20);
+  rect(width/2 - 100, height - player.positionY - 200,185,20);
   fill("red");
-  rect(width/2 - 100, height - player.positionY - 400,player.life,20);
+  rect(width/2 - 100, height - player.positionY - 200,player.life,20);
   noStroke();
   pop();
 }
 showFuel(){
   push();
-  image(fuelImg,width/2-130, height - player.positionY - 350,20,20);
+  image(fuelImg,width/2-130, height - player.positionY - 100,20,20);
   fill("white");
-  rect(width/2 - 100, height - player.positionY - 350,185,20);
+  rect(width/2 - 100, height - player.positionY - 100,185,20);
   fill("blue");
-  rect(width/2 - 100, height - player.positionY - 350,player.fuel,20);
+  rect(width/2 - 100, height - player.positionY - 100,player.fuel,20);
   noStroke();
   pop();
 }
+
+handleObstacleCollision(index){
+  if(carros[index-1].collide(obstaculos)){
+    if(this.leftKeyActive){
+      player.positionX += 100;
+    }
+    else{
+      player.positionX -= 100;
+    }
+    if(player.life>0){
+      player.life = 185/5;
+    }
+    player.update();
+  }
+}
+
 gameOver(){
   swal({
     title: `Gameover!${"\n"}Rank${"\n"}${player.rank}`,
