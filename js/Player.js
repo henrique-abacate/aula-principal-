@@ -8,6 +8,7 @@ class Player {
     this.score = 0;
     this.fuel = 185;
     this.life = 185;
+    
   }
 
   update(){

@@ -10,6 +10,7 @@ var fuels, powerCoins, fuelImg, powerCoinsImg;
 var obstacle1Image,obstacle2Image;
 var obstaculos;
 var lifeImg;
+var kaboom;
 
 
 function preload() {
@@ -22,6 +23,7 @@ function preload() {
   obstacle1Image = loadImage("assets/obstacle1.png");
   obstacle2Image = loadImage("assets/obstacle2.png");
   lifeImg = loadImage("assets/life.png");
+  kaboom = loadImage ("assets/blast.png");
 }
 
 function setup() {

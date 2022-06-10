@@ -24,6 +24,8 @@ class Game {
     carro2 = createSprite(width/2 + 100, height - 100);
     carro2.addImage("carro2", carro2Img);
     carro2.scale = 0.07;
+    carro1.addImage ("kaboom",kaboom);
+    carro2.addImage ("kaboom",kaboom);
 
     carros = [carro1,carro2];
 
@@ -124,10 +126,14 @@ window.location.reload ();
           this.handleFuel(index);
           this.handlePowerCoins(index);
           this.handleObstacleCollision(index);
+          this.carsCollision(index);
           
           if(player.life <= 0){
             this.playerMoving = false;
+          carros [index-1].changeImage ("kaboom");
+          carros[index-1].scale = 0.5
           }
+          
 
           //camera do jogo na direção y
           camera.position.y = carros[index-1].position.y;
@@ -289,7 +295,7 @@ handleObstacleCollision(index){
       player.positionX -= 100;
     }
     if(player.life>0){
-      player.life = 185/5;
+      player.life -= 185/5;
     }
     player.update();
   }
@@ -304,5 +310,40 @@ gameOver(){
     imageSize: "100x100",
     confirmButtonText: "Ok"
   });
+}
+carsCollision (index){
+  if (index == 1){
+  if (carros[index-1].collide(carros[1])){
+    if(this.leftKeyActive){
+      player.positionX += 100;
+    }
+    else{
+      player.positionX -= 100;
+    }
+    if(player.life>0){
+      player.life -= 185/5;
+    }
+    player.update();
+  
+  }
+}
+if (index == 2){
+  if (carros[index-1].collide(carros[0])){
+    if(this.leftKeyActive){
+      player.positionX += 100;
+    }
+    else{
+      player.positionX -= 100;
+    }
+    if(player.life>0){
+      player.life -= 185/5;
+    }
+    player.update();
+  
+  
+
+
+}
+}
 }
 }
