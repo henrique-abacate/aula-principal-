@@ -2,6 +2,7 @@ class Game {
   constructor() {
     this.resetTitle = createElement("h2");
     this.resetButton = createButton("");
+    this.blast= false;
 
     this.leaderboardTitle = createElement("h2");
     this.leader1 = createElement("h2");
@@ -132,6 +133,7 @@ window.location.reload ();
             this.playerMoving = false;
           carros [index-1].changeImage ("kaboom");
           carros[index-1].scale = 0.5
+          this.blast = true;
           }
           
 
@@ -159,6 +161,9 @@ window.location.reload ();
   }
 
   handlePlayerControl(){
+    if(!this.blast){
+    
+    
     if(keyIsDown(UP_ARROW)){
       this.playerMoving = true;
       player.positionY += 10;
@@ -178,6 +183,7 @@ window.location.reload ();
       
 
     }
+  }
   }
 
   getState(){
@@ -340,10 +346,10 @@ if (index == 2){
     }
     player.update();
   
-  
-
-
 }
 }
 }
+ cerveja(){
+console.log("Perdeu bocó");
+ }
 }
